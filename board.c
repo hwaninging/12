@@ -1,17 +1,19 @@
 #if 0 //어떤게 있으면 좋을지 작성 (컴파일 안되게 하기) 
 int board_initBoard(void); //했다 
 int board_getBoardStatus(int pos); //했다 
-int board_getSharkPosition(void);
+int board_getSharkPosition(void); 
 int board_stepShark(void);
 int board_getBoardCoin(int pos); //했다 
 void board_printBoardStatus(void); //했다 
 #endif 
 
+#include "board.h"
+
 #define N_BOARD          20 //몇 칸 할지 정하는 거 
 #define BOARDSTATUS_OK   1 //상어에 의해서 파손 or 안 파손. 
 #define BOARDSTATUS_NOK  0
 #define N_COINPOS        12
-#defien MAX_COIN         4
+#define MAX_COIN         4 
 
 //전역변수 사용 
 static int board_status[N_BOARD];
@@ -32,7 +34,7 @@ void board_printBoardStatus(void)
              printf("O");
       }
      printf("|\n");
-     printf("---------------------------------------------");
+     printf("-------------------------------------------\n");
 }
 
 //보드 정보 제공 
