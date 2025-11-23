@@ -12,13 +12,32 @@ void board_printBoardStatus(void); //했다
 #define N_BOARD          20 //몇 칸 할지 정하는 거 
 #define BOARDSTATUS_OK   1 //상어에 의해서 파손 or 안 파손. 
 #define BOARDSTATUS_NOK  0
+
+#include "board.h"
+
 #define N_COINPOS        12
 #define MAX_COIN         4 
+#define MAX_SHARKSTEP    6
+#define SHARK_INITPOS    -4 
 
 //전역변수 사용 
 static int board_status[N_BOARD];
 static int board_coin[N_BOARD];
 static int shark_position;
+
+//ㅎㅎ 
+int board_stepShark(void)
+{
+    int step = rand()%MAX_SHARKSTEP + 1;
+    int i;
+    for (i=0;i<step;i++);
+    { //board칸 하나씩 부심 
+        int posIdx = shark_position + i + 1; //0부터 안 시작하게 +1 해주기 
+        if (posIdx >= 0) //윗줄 문제 안 생기게 방어 코드  
+        board_status[posIdx] = BOARDSTATUS_NOK;
+    }
+    shark_position += step; //shark position 갱신  
+}
 
 void board_printBoardStatus(void)
 {
@@ -28,14 +47,23 @@ void board_printBoardStatus(void)
      for (i=0;i<N_BOARD;i++)
      {
          printf("|");
-         if (board_status[i] == BOARDSTATUS_NOK)
+         if (board_getBoardStatus(i) == BOARDSTATUS_NOK)
              printf("X");
          else
              printf("O");
       }
      printf("|\n");
      printf("-------------------------------------------\n");
+     
+     printf("-----------------BOARD COIN----------------\n");
+     for (i=0;i<N_BOARD;i++)
+     {
+         printf("|");
+      }
+     printf("|\n");
+     printf("-------------------------------------------\n");
 }
+
 
 //보드 정보 제공 
 int board_getBoardStatus(int pos)
@@ -54,6 +82,8 @@ int board_getBoardCoin(int pos)
 void board_initBoard(void) //지금은 반환할게 없어서 void 
 {
     int i;
+    
+    shark_position = SHARK_INITPOS;
     
     //initialize arrays
     for (i=0;i<N_BOARD;i++)
